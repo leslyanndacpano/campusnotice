@@ -1,3 +1,5 @@
+// CampusNotice Announcement data model
+
 import { a, defineData, type ClientSchema } from "@aws-amplify/backend";
 
 const schema = a.schema({
