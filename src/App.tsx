@@ -13,6 +13,7 @@ function App() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All");
   const [status, setStatus] = useState("Connecting to the live campus feed...");
+  const [hideExpired, setHideExpired] = useState(false);
 
   useEffect(() => {
     const subscription = client.models.Announcement.observeQuery().subscribe({
@@ -35,14 +36,16 @@ function App() {
     setDraft(emptyDraft);
     setStatus("Announcement published.");
   }
-    const normalizedQuery = query.trim().toLowerCase();
+  const normalizedQuery = query.trim().toLowerCase();
+  const today = new Date().toISOString().slice(0, 10);
   const filteredAnnouncements = [...announcements]
     .filter((announcement) => {
       const matchesCategory = category === "All" || announcement.category === category;
+      const matchesExpiry = !hideExpired || announcement.expiresOn >= today;
       const searchableText = [announcement.title, announcement.content, announcement.organization]
         .join(" ")
         .toLowerCase();
-      return matchesCategory && searchableText.includes(normalizedQuery);
+      return matchesCategory && matchesExpiry && searchableText.includes(normalizedQuery);
     })
     .sort((first, second) => second.createdAt.localeCompare(first.createdAt));
 
@@ -108,7 +111,19 @@ function App() {
               ))}
             </select>
           </label>
-
+            <label>
+              <span>Expiry</span>
+              <span>
+                <input
+                  className="inline-checkbox"
+                  type="checkbox"
+                  checked={hideExpired}
+                  onChange={(event) => setHideExpired(event.target.checked)}
+                />{" "}
+                Hide expired
+              </span>
+            </label>
+            
           <label>
             Message
             <textarea

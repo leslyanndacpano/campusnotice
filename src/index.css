@@ -32,3 +32,4 @@ h1, h2, h3, p { margin-top: 0; }
 .expiry { margin-bottom: 0; font-size: 0.84rem; }
 .empty-state { padding: 2.5rem 1rem; border: 2px dashed #cbd5e1; border-radius: 14px; text-align: center; }
 @media (max-width: 820px) { .hero, .feed-heading { align-items: start; flex-direction: column; } .workspace, .filters { grid-template-columns: 1fr; } .connection-status { white-space: normal; } }
+.inline-checkbox { width: auto; margin-right: 0.35rem; }
